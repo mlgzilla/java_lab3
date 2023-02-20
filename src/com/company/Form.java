@@ -25,6 +25,12 @@ public class Form extends JDialog {
     static class RecIntegral {
         String Upper, Lower, Step;
     }
+    static class MyException extends Exception{
+        String msg;
+        MyException(String code){
+            msg = code;
+        }
+    }
 
     List<RecIntegral> listA = new ArrayList();
 
@@ -47,8 +53,13 @@ public class Form extends JDialog {
                     limUp = Double.parseDouble(str_limUp);
                     limDown = Double.parseDouble(str_limDown);
                     step = Double.parseDouble(str_step);
-                } catch (Exception e) {
-                    ShowMsg("Введено некорректное значение");
+                    if(limDown<0.000001 || limDown>100000){
+                        throw new MyException("Неверное значение нижнего предела");
+                    } else if (limUp>100000 || limUp>100000) {
+                        throw new MyException("Неверное значение верхнего предела");
+                    }
+                } catch (MyException e) {
+                    ShowMsg(e.msg);
                     return;
                 }
 
